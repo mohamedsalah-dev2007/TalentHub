@@ -21,19 +21,41 @@
             <!-- Name -->
             <div style="margin-bottom: 16px;">
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Full Name</label>
-                <input type="text" name="name" required autofocus style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="John Doe">
+                <input type="text" name="name" value="{{ old('name') }}" required autofocus style="width: 100%; padding: 10px 14px; border: 1px solid {{ $errors->has('name') ? '#ef4444' : '#cbd5e1' }}; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="John Doe">
+                @error('name')
+                    <span style="color: #ef4444; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span>
+                @enderror
             </div>
 
             <!-- Email Address -->
             <div style="margin-bottom: 16px;">
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Email</label>
-                <input type="email" name="email" required style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="name@example.com">
+                <input type="email" name="email" value="{{ old('email') }}" required style="width: 100%; padding: 10px 14px; border: 1px solid {{ $errors->has('email') ? '#ef4444' : '#cbd5e1' }}; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="name@example.com">
+                @error('email')
+                    <span style="color: #ef4444; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span>
+                @enderror
+            </div>
+            
+            <!-- Role Selection -->
+            <div style="margin-bottom: 16px;">
+                <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Account Type</label>
+                <select name="role" required style="width: 100%; padding: 10px 14px; border: 1px solid {{ $errors->has('role') ? '#ef4444' : '#cbd5e1' }}; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box; background-color: #fff;">
+                    <option value="" disabled {{ old('role') ? '' : 'selected' }}>Select account type</option>
+                    <option value="employee" {{ old('role') == 'employee' ? 'selected' : '' }}>Employee</option>
+                    <option value="employer" {{ old('role') == 'employer' ? 'selected' : '' }}>Employer</option>
+                </select>
+                @error('role')
+                    <span style="color: #ef4444; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span>
+                @enderror
             </div>
 
             <!-- Password -->
             <div style="margin-bottom: 16px;">
                 <label style="display: block; font-size: 13px; font-weight: 600; color: #334155; margin-bottom: 6px;">Password</label>
-                <input type="password" name="password" required style="width: 100%; padding: 10px 14px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="••••••••">
+                <input type="password" name="password" required style="width: 100%; padding: 10px 14px; border: 1px solid {{ $errors->has('password') ? '#ef4444' : '#cbd5e1' }}; border-radius: 8px; font-size: 14px; outline: none; box-sizing: border-box;" placeholder="••••••••">
+                @error('password')
+                    <span style="color: #ef4444; font-size: 12px; margin-top: 4px; display: block;">{{ $message }}</span>
+                @enderror
             </div>
 
             <!-- Confirm Password -->

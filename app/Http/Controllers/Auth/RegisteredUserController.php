@@ -15,32 +15,24 @@ use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
     public function create(): View
     {
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws ValidationException
-     */
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'role' => ['required', 'string', 'in:job_seeker,employer'], // تحقق من نوع الحساب
+            'role' => ['required', 'string', 'in:employer,employee'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'role' => $request->role, // حفظ الـ role في الداتا بيز
+            'role' => $request->role,
             'password' => Hash::make($request->password),
         ]);
 
@@ -48,6 +40,10 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        if ($user->role === 'employer') {
+            return redirect()->route('employer.dashboard');
+        } else {
+            return redirect()->route('employee.dashboard');
+        }
     }
 }
