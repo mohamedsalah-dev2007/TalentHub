@@ -7,9 +7,13 @@
 </head>
 <body style="background-color: #f8fafc; color: #1e293b; margin: 0; font-family: Arial, sans-serif;">
 
-    @include('layouts.navbar', [
+   @include('layouts.navbar', [
         'role' => 'Admin',
-        'links' => ['Users' => '#', 'Settings' => '#']
+        'links' => [
+            'Manage Users' => '#', 
+            'Manage Jobs' => '#', 
+            'All Applications' => '#'
+        ]
     ])
 
     <main style="max-width: 1150px; margin: 40px auto; padding: 0 16px;">
