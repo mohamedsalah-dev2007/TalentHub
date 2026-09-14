@@ -26,7 +26,7 @@
             </button>
 
             <div id="userDropdown" style="display: none; position: absolute; right: 0; margin-top: 8px; background: #ffffff; min-width: 150px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; z-index: 50;">
-                <a href="#" style="display: block; padding: 10px 16px; font-size: 13px; font-weight: 600; color: #334155; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Profile</a>
+                <a href="{{ route('profile.edit') }}" style="display: block; padding: 10px 16px; font-size: 13px; font-weight: 600; color: #334155; text-decoration: none; border-bottom: 1px solid #f1f5f9;">Profile</a>
                 <form method="POST" action="{{ route('logout') }}" style="margin: 0;">
                     @csrf
                     <button type="submit" style="width: 100%; text-align: left; background: none; border: none; padding: 10px 16px; font-size: 13px; font-weight: 600; color: #dc2626; cursor: pointer;">
