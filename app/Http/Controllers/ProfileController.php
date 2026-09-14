@@ -57,4 +57,23 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+    public function updateFiles(Request $request): RedirectResponse
+{
+    $request->validate([
+        'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+        'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+    ]);
+
+    if ($request->hasFile('cv')) {
+        $request->user()->cv = $request->file('cv')->store('cvs', 'public');
+    }
+
+    if ($request->hasFile('profile_picture')) {
+        $request->user()->profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
+    }
+
+    $request->user()->save();
+
+    return Redirect::route('profile.edit')->with('status', 'files-updated');
+}
 }

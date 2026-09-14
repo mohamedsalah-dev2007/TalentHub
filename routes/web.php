@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\JobController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -24,7 +24,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/employee/dashboard', function () {
         return view('employee.dashboard');
     })->name('employee.dashboard');
+    
+    Route::post('/profile/files', [ProfileController::class, 'updateFiles'])
+    ->name('profile.files');
 
+    Route::get('/employee/jobs', [JobController::class, 'index'])
+    ->name('employee.jobs');
+    Route::post('/employee/jobs/{id}/apply', [JobController::class, 'apply'])
+    ->name('employee.jobs.apply');
+    Route::get('/employee/applications', [JobController::class, 'applications'])
+    ->name('employee.applications');
     // ملف الشخصي المشترك
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

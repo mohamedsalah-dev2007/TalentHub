@@ -10,10 +10,10 @@
     @include('layouts.navbar', [
         'role' => 'Employee',
         'links' => [
-            'Find Jobs' => '#', 
-            'My Applications' => '#', 
-            'Profile' => '#'
-        ]
+      'Find Jobs' => route('employee.jobs'), 
+      'My Applications' => route('employee.applications'),
+      'Profile' => route('profile.edit')
+]
     ])
 
     <main style="max-width: 1150px; margin: 40px auto; padding: 0 16px;">
