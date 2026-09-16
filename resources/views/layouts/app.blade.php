@@ -15,22 +15,24 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
-            <!-- Page Heading -->
-            @isset($header)
-                <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <!-- أضفنا هنا flex flex-col justify-between عشان نقفل الشاشة وننزل الفوتر تحت -->
+        <div class="min-h-screen bg-gray-100 flex flex-col justify-between">
+            <div>
+                <!-- Page Heading / Header Slot -->
+                @isset($header)
+                    <div class="sticky top-0 z-50">
                         {{ $header }}
                     </div>
-                </header>
-            @endisset
+                @endisset
 
-            <!-- Page Content -->
-            <main>
-                {{ $slot }}
-            </main>
+                <!-- Page Content -->
+                <main>
+                    {{ $slot }}
+                </main>
+            </div>
+
+            <!-- استدعاء الفوتر هنا عشان يظهر في جميع الصفحات -->
+            @include('layouts.footer')
         </div>
     </body>
 </html>

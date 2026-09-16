@@ -8,7 +8,7 @@
     <meta http-equiv="Expires" content="0">
     <title>TalentHub</title>
 </head>
-<body style="background-color: #f8fafc; color: #1e293b; margin: 0; padding: 0; font-family: Arial, sans-serif;">
+<body style="background-color: #a7e4f4; color: #1e293b; margin: 0; padding: 0; font-family: Arial, sans-serif;">
 
     <!-- Hero Section -->
     <div style="background-image: url('{{ asset('images/home_img.png') }}'); background-size: cover; background-position: center; position: relative; width: 100%; min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between; padding: 24px 0;">
@@ -96,6 +96,6 @@
             @endforeach
         </div>
     </section>
-
+ @include('layouts.footer')
 </body>
 </html>

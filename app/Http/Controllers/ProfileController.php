@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -48,6 +49,14 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
+        // حذف الصورة والـ CV من السيرفر عند حذف الحساب
+        if ($user->profile_photo_path) {
+            Storage::disk('public')->delete($user->profile_photo_path);
+        }
+        if ($user->cv_path) {
+            Storage::disk('public')->delete($user->cv_path);
+        }
+
         Auth::logout();
 
         $user->delete();
@@ -57,23 +66,29 @@ class ProfileController extends Controller
 
         return Redirect::to('/');
     }
+
+    /**
+     * Update the user's files.
+     */
     public function updateFiles(Request $request): RedirectResponse
-{
-    $request->validate([
-        'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
-        'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
-    ]);
+    {
+        $request->validate([
+            'cv' => ['nullable', 'file', 'mimes:pdf,doc,docx', 'max:5120'],
+            'profile_picture' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
+        ]);
 
-    if ($request->hasFile('cv')) {
-        $request->user()->cv = $request->file('cv')->store('cvs', 'public');
+        $user = $request->user();
+
+        if ($request->hasFile('cv')) {
+            $user->cv_path = $request->file('cv')->store('cvs', 'public');
+        }
+
+        if ($request->hasFile('profile_picture')) {
+            $user->profile_photo_path = $request->file('profile_picture')->store('profile_pictures', 'public');
+        }
+
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'files-updated');
     }
-
-    if ($request->hasFile('profile_picture')) {
-        $request->user()->profile_picture = $request->file('profile_picture')->store('profile_pictures', 'public');
-    }
-
-    $request->user()->save();
-
-    return Redirect::route('profile.edit')->with('status', 'files-updated');
-}
 }

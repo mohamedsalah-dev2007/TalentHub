@@ -22,8 +22,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // لوحة تحكم الموظف/الباحث عن عمل
     Route::get('/employee/dashboard', function () {
-        return view('employee.dashboard');
-    })->name('employee.dashboard');
+        return view('employee.home');
+    })->name('employee.home');
     
     Route::post('/profile/files', [ProfileController::class, 'updateFiles'])
     ->name('profile.files');
