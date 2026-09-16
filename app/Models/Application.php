@@ -3,24 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Application extends Model
 {
-   protected $fillable = [
-    'user_id',
-    'job_listing_id',
-    'resume',
-    'cover_letter',
-    'status',
-];
+    protected $fillable = ['user_id', 'job_listing_id', 'resume', 'cover_letter', 'status'];
 
-public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
 
-public function jobListing()
-{
-    return $this->belongsTo(JobListing::class);
-}
+    public function jobListing(): BelongsTo
+    {
+        return $this->belongsTo(JobListing::class);
+    }
 }
