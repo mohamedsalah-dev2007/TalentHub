@@ -10,7 +10,7 @@
     @include('layouts.navbar', [
         'role' => 'Employee',
         'links' => [
-            'Home' => route('employee.home'),
+            'Dashboard' => route('employee.dashboard'),
             'Find Jobs' => route('employee.jobs'),
             'My Applications' => route('employee.applications'),
             'Profile' => route('profile.edit')

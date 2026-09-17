@@ -24,8 +24,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('dashboard');
 
     Route::get('/admin/dashboard', function () { return view('admin.dashboard'); })->name('admin.dashboard');
-    Route::get('/employee/dashboard', function () { return view('employee.dashboard'); })->name('employee.dashboard');
-
+Route::get('/employee/dashboard', [\App\Http\Controllers\EmployeeController::class, 'dashboard'])->name('employee.dashboard');
     Route::get('/employer/dashboard', [EmployerController::class, 'dashboard'])->name('employer.dashboard');
 
     Route::prefix('employer')->name('employer.')->group(function () {
@@ -43,7 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // روتس الموظف وبحث الوظائف
     Route::post('/profile/files', [ProfileController::class, 'updateFiles'])->name('profile.files');
-    Route::get('/employee/jobs', [JobController::class, 'index'])->name('employee.jobs');
+    Route::get('/employee/jobs', [JobController::class, 'employeeIndex'])->name('employee.jobs');
     Route::post('/employee/jobs/{id}/apply', [JobController::class, 'apply'])->name('employee.jobs.apply');
     Route::get('/employee/applications', [JobController::class, 'applications'])->name('employee.applications');
 

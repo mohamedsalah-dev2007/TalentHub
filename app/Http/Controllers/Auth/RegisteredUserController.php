@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -38,12 +37,10 @@ class RegisteredUserController extends Controller
         ]);
 
         if ($user->role === 'employer') {
-            Company::create([
-                'user_id' => $user->id,
-                'name' => $user->name . ' Company',
-                'description' => '',
-                'location' => '',
-            ]);
+            Company::firstOrCreate(
+                ['user_id' => $user->id],
+                ['name' => $user->name . ' Company']
+            );
         }
 
         event(new Registered($user));

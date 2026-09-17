@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Application;
+use App\Models\Company;
 use App\Models\JobListing;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -10,17 +11,30 @@ use Illuminate\View\View;
 
 class JobController extends Controller
 {
-    // دوال خاصة بالـ Employer لإدارة وظائفه
     public function index(): View
     {
-        $company = app(EmployerController::class)->companyForCurrentUser();
+        $company = Company::firstOrNew(
+            ['user_id' => auth()->id()],
+            ['name' => auth()->user()->name . ' Company']
+        );
+        if (!$company->exists) {
+            $company->save();
+        }
+        
         $jobs = $company->jobs()->latest()->get();
         return view('employer.manage-jobs', compact('company', 'jobs'));
     }
 
     public function create(): View
     {
-        $company = app(EmployerController::class)->companyForCurrentUser();
+        $company = Company::firstOrNew(
+            ['user_id' => auth()->id()],
+            ['name' => auth()->user()->name . ' Company']
+        );
+        if (!$company->exists) {
+            $company->save();
+        }
+
         return view('employer.post-job', compact('company'));
     }
 
@@ -34,7 +48,14 @@ class JobController extends Controller
             'job_type' => ['required', 'string', 'in:Full-time,Part-time,Contract,Internship,Remote'],
         ]);
 
-        $company = app(EmployerController::class)->companyForCurrentUser();
+        $company = Company::firstOrNew(
+            ['user_id' => auth()->id()],
+            ['name' => auth()->user()->name . ' Company']
+        );
+        if (!$company->exists) {
+            $company->save();
+        }
+
         $company->jobs()->create($data);
 
         return redirect()->route('employer.jobs.index')->with('success', 'Job posted successfully.');
@@ -42,14 +63,22 @@ class JobController extends Controller
 
     public function edit(JobListing $job): View
     {
-        $company = app(EmployerController::class)->companyForCurrentUser();
+        $company = Company::firstOrNew(
+            ['user_id' => auth()->id()],
+            ['name' => auth()->user()->name . ' Company']
+        );
+        
         abort_unless($job->company_id === $company->id, 403);
         return view('employer.edit-job', compact('company', 'job'));
     }
 
     public function update(Request $request, JobListing $job): RedirectResponse
     {
-        $company = app(EmployerController::class)->companyForCurrentUser();
+        $company = Company::firstOrNew(
+            ['user_id' => auth()->id()],
+            ['name' => auth()->user()->name . ' Company']
+        );
+        
         abort_unless($job->company_id === $company->id, 403);
 
         $data = $request->validate([
@@ -66,13 +95,16 @@ class JobController extends Controller
 
     public function destroy(JobListing $job): RedirectResponse
     {
-        $company = app(EmployerController::class)->companyForCurrentUser();
+        $company = Company::firstOrNew(
+            ['user_id' => auth()->id()],
+            ['name' => auth()->user()->name . ' Company']
+        );
+        
         abort_unless($job->company_id === $company->id, 403);
         $job->delete();
         return back()->with('success', 'Job deleted successfully.');
     }
 
-    // دوال خاصة بالموظف (عرض الوظائف المتاحة والتقديم عليها)
     public function employeeIndex()
     {
         $jobs = JobListing::with('company')->latest()->get();

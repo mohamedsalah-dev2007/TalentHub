@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +14,9 @@
             background: #f8fafc;
             color: #1e293b;
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             width: min(1150px, calc(100% - 32px));
@@ -119,6 +123,7 @@
         }
         .page {
             padding: 42px 0 70px;
+            flex: 1;
         }
         .eyebrow {
             font-size: 12px;
@@ -412,7 +417,7 @@
         }
     </style>
 </head>
-<body>
+<body style="background-color: #a7e4f4;" class="...">
 <header class="container nav-wrap">
     <div class="navbar">
         <div class="brand">
@@ -420,7 +425,6 @@
             <span class="role">Employer</span>
         </div>
         <nav class="nav">
-            <a class="{{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
             <a class="{{ request()->routeIs('employer.dashboard') ? 'active' : '' }}" href="{{ route('employer.dashboard') }}">Dashboard</a>
             <a class="{{ request()->routeIs('employer.jobs.create') ? 'active' : '' }}" href="{{ route('employer.jobs.create') }}">Post Job</a>
             <a class="{{ request()->routeIs('employer.jobs.*') && !request()->routeIs('employer.jobs.create') ? 'active' : '' }}" href="{{ route('employer.jobs.index') }}">Manage Jobs</a>
@@ -446,6 +450,12 @@
     @endif
     @yield('content')
 </main>
+
+<!-- الفوتر بعرض الشاشة بالكامل -->
+<div style="width: 100%; background-color: #0c4a60;">
+    @include('layouts.footer')
+</div>
+
 <script>
     document.addEventListener('click', function (e) {
         const a = document.querySelector('.account');

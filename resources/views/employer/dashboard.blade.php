@@ -1,5 +1,6 @@
 @extends('layouts.employer')
 @section('content')
+
 <div class="eyebrow">Employer workspace</div>
 <h1 class="title">Welcome back, {{ auth()->user()->name }}</h1>
 <p class="subtitle">Manage your company, publish opportunities, and review applicants from one place.</p>
