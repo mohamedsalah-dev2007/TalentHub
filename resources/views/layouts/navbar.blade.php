@@ -8,13 +8,19 @@
             @endif
         </div>
         
-        <nav style=""position: fixed; top: 0; left: 0; width: 100%; z-index: 1000; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.05); padding: 10px 0;>
+        <nav style="display: flex; gap: 28px; font-size: 13px; align-items: center;">
+
+
+            @if(isset($role) && $role == 'Admin')
+                <a href="{{ route('admin.dashboard') }}" style="text-decoration: none; color: #475569; font-weight: {{ request()->routeIs('admin.dashboard') ? '600' : '500' }};">Dashboard</a>
+            @endif
+
             @if(isset($links) && is_iterable($links))
                 @foreach($links as $name => $url)
                     @php
                         $isActive = request()->url() == $url;
                     @endphp
-                    <a href="{{ $url }}" style="text-decoration: none; padding: 6px 14px; border-radius: 9999px; transition: all 0.2s ease; {{ $isActive ? 'background: #e2e8f0; color: #0f172a; font-weight: 600; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #cbd5e1;' : 'color: #475569;' }}">
+                    <a href="{{ $url }}" style="text-decoration: none; padding: 6px 14px; border-radius: 9999px; transition: all 0.2s ease; {{ $isActive ? 'background: #e2e8f0; color: #0f172a; font-weight: 600; box-shadow: inset 0 1px 2px rgba(0,0,0,0.05); border: 1px solid #cbd5e1;' : 'color: #475569; font-weight: 500;' }}">
                         {{ $name }}
                     </a>
                 @endforeach

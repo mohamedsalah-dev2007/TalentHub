@@ -20,7 +20,7 @@
         <header style="width: 100%; max-width: 1150px; margin: 0 auto; padding: 0 16px; z-index: 2;">
             <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border: 1px solid rgba(226, 232, 240, 0.8); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border-radius: 9999px; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between;">
                 <div style="display: flex; align-items: center;">
-                    <span style="font-size: 16px; font-weight: bold; color: #074c6b; letter-spacing: -0.5px;">JobBoard</span>
+                    <span style="font-size: 16px; font-weight: bold; color: #074c6b; letter-spacing: -0.5px;">TalentHub</span>
                 </div>
                 
                 <nav style="display: flex; gap: 28px; font-size: 13px; font-weight: 500; align-items: center;">

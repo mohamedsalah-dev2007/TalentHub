@@ -61,25 +61,10 @@ class JobController extends Controller
         return redirect()->route('employer.jobs.index')->with('success', 'Job posted successfully.');
     }
 
-    public function edit(JobListing $job): View
-    {
-        $company = Company::firstOrNew(
-            ['user_id' => auth()->id()],
-            ['name' => auth()->user()->name . ' Company']
-        );
-        
-        abort_unless($job->company_id === $company->id, 403);
-        return view('employer.edit-job', compact('company', 'job'));
-    }
 
-    public function update(Request $request, JobListing $job): RedirectResponse
+   public function update(Request $request, $id): RedirectResponse
     {
-        $company = Company::firstOrNew(
-            ['user_id' => auth()->id()],
-            ['name' => auth()->user()->name . ' Company']
-        );
-        
-        abort_unless($job->company_id === $company->id, 403);
+        $job = JobListing::findOrFail($id);
 
         $data = $request->validate([
             'title' => ['required', 'string', 'max:255'],
@@ -90,9 +75,9 @@ class JobController extends Controller
         ]);
 
         $job->update($data);
-        return redirect()->route('employer.jobs.index')->with('success', 'Job updated successfully.');
-    }
 
+        return redirect()->route('admin.jobs.index')->with('success', 'Job updated successfully.');
+    }
     public function destroy(JobListing $job): RedirectResponse
     {
         $company = Company::firstOrNew(
@@ -136,7 +121,7 @@ class JobController extends Controller
         return redirect()->route('employee.applications')
             ->with('success', 'Application submitted successfully.');
     }
-
+  
     public function applications()
     {
         $applications = Application::with('jobListing.company')
@@ -145,5 +130,35 @@ class JobController extends Controller
             ->get();
 
         return view('employee.applications', compact('applications'));
+    }
+    public function adminIndex(): View
+    {
+        $jobs = JobListing::with('company')->latest()->get();
+        return view('admin.jobs.index', compact('jobs'));
+    }
+   public function edit($id): View
+    {
+        $job = JobListing::findOrFail($id);
+        
+        return view('admin.jobs.edit', compact('job'));
+    }
+    public function adminCreate(): View
+    {
+        return view('admin.jobs.create');
+    }
+
+    public function adminStore(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'title' => ['required', 'string', 'max:255'],
+            'description' => ['required', 'string', 'max:10000'],
+            'salary' => ['nullable', 'string', 'max:100'],
+            'location' => ['required', 'string', 'max:255'],
+            'job_type' => ['required', 'string', 'in:Full-time,Part-time,Contract,Internship,Remote'],
+        ]);
+
+        JobListing::create($data);
+
+        return redirect()->route('admin.jobs.index')->with('success', 'Job created successfully.');
     }
 }
